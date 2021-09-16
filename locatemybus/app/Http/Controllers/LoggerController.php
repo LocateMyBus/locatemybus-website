@@ -38,56 +38,64 @@ if($request->isMethod('post')){
 					$bus = getBusByRfId($rf_id);
 					if(!is_null($bus)){
 						// Bus exists. Valid RFID
-						$trip_id = getCurrentTripOfBus($bus->bus_id)->trip_id;
-						/* -- */
-						//$trip_id = strtoupper($request->input('trip_id')); // Will be empty string if not avl in Request
-						if(!is_null($trip_id) && checkTripExists($trip_id)){
-							if(checkStopInRoute($trip_id, $stop_id)){
-								if(checkSameDayLog($trip_id, $stop_id, $arr_date)){
-								// If this trip has been logged already, ignore
-								return response()->json([
-									"Error" => "This trip was already logged"
-								], 208); // Already Reported
-								}
-								else{
-								DB::table('time_logs')->insert([
-									'trip_id' => $trip_id,
-									'stop_id' => $stop_id,
-									'arrival_time' => $arr_time,
-									'arrival_date' => $arr_date,
-								]);
-								$next_stop = getNextStop($trip_id, $stop_id);
-								if(!$next_stop){
-									// This is the last stop of the route
-									;
-								}
-								else{
-									$predicted_time = predictByTraffic($stop_id, $next_stop);
-									cleanTripPredictions($trip_id, $next_stop, $arr_date);
-									// Make new prediction entry
-									DB::table('live_traffic_predictions')->insert([
-									'trip_id' => $trip_id,
-									'trip_date' => $arr_date,
-									'predicted_time' => $predicted_time,
-									'stop_id' => $next_stop,
+						$trip = getCurrentTripOfBus($bus->bus_id);
+						if(!is_null($trip)){
+							$trip_id = $trip->trip_id;
+							/* -- */
+							//$trip_id = strtoupper($request->input('trip_id')); // Will be empty string if not avl in Request
+							if(!is_null($trip_id) && checkTripExists($trip_id)){
+								if(checkStopInRoute($trip_id, $stop_id)){
+									if(checkSameDayLog($trip_id, $stop_id, $arr_date)){
+									// If this trip has been logged already, ignore
+									return response()->json([
+										"Error" => "This trip was already logged"
+									], 208); // Already Reported
+									}
+									else{
+									DB::table('time_logs')->insert([
+										'trip_id' => $trip_id,
+										'stop_id' => $stop_id,
+										'arrival_time' => $arr_time,
+										'arrival_date' => $arr_date,
 									]);
+									$next_stop = getNextStop($trip_id, $stop_id);
+									if(!$next_stop){
+										// This is the last stop of the route
+										;
+									}
+									else{
+										$predicted_time = predictByTraffic($stop_id, $next_stop);
+										cleanTripPredictions($trip_id, $next_stop, $arr_date);
+										// Make new prediction entry
+										DB::table('live_traffic_predictions')->insert([
+										'trip_id' => $trip_id,
+										'trip_date' => $arr_date,
+										'predicted_time' => $predicted_time,
+										'stop_id' => $next_stop,
+										]);
+									}
+									return response()->json([
+										"Success" => "Trip Time Logged",
+										"Time" => $arr_time,
+										"Date" => $arr_date
+									], 202); // Accepted
+									}
 								}
-								return response()->json([
-									"Success" => "Trip Time Logged",
-									"Time" => $arr_time,
-									"Date" => $arr_date
-								], 202); // Accepted
+								else{
+									return response()->json([
+										"Error" => "This Client is Not Allowed"
+									], 401);  //Unauthorized
 								}
 							}
 							else{
 								return response()->json([
-									"Error" => "This Client is Not Allowed"
-								], 401);  //Unauthorized
+									"Error" => "Invalid Trip ID"
+								], 400); // Bad Request
 							}
 						}
 						else{
 							return response()->json([
-								"Error" => "Invalid Trip ID"
+								"Error" => "Corrupt RF-ID"
 							], 400); // Bad Request
 						}
 					}
