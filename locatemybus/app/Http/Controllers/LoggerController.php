@@ -61,17 +61,20 @@ if($request->isMethod('post')){
 										$next_stop = getNextStop($trip_id, $stop_id);
 										if(!$next_stop){
 											// This is the last stop of the route
-											;
+											// Remove Bus-Trip association
+											DB::table('trips')
+											->where('trip_id', $trip_id)
+											->update(['bus_id' => NULL]);
 										}
 										else{
 											$predicted_time = predictByTraffic($stop_id, $next_stop);
 											cleanTripPredictions($trip_id, $next_stop, $arr_date);
 											// Make new prediction entry
 											DB::table('live_traffic_predictions')->insert([
-											'trip_id' => $trip_id,
-											'trip_date' => $arr_date,
-											'predicted_time' => $predicted_time,
-											'stop_id' => $next_stop,
+												'trip_id' => $trip_id,
+												'trip_date' => $arr_date,
+												'predicted_time' => $predicted_time,
+												'stop_id' => $next_stop,
 											]);
 										}
 										return response()->json([
