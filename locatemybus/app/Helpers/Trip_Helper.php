@@ -20,6 +20,7 @@ if(!function_exists('predictByTraffic')){
     // QUERY THE MAPS API TO GET TIME
 
     $predicted_time = date('H:i',strtotime('+15 minutes'));
+	$predicted_time = '<time>';
     return $predicted_time;
   }
 }
@@ -71,6 +72,7 @@ if(!function_exists('predictByModel')){
     // PREDICT USING THE LEARNT WEIGHTS
 
     $predicted_time = date('H:i',strtotime('+15 minutes'));
+	$predicted_time = '<time>';
     return $predicted_time;
   }
 }
