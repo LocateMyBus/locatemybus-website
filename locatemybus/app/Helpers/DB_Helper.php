@@ -428,6 +428,14 @@ if(!function_exists('getStopsInTrip')){
 
 // ---------------------------------------- BUS -----------------------------------------
 
+if(!function_exists('getBusByRfId')){
+	function getBusByRfId($rf_id){
+		$bus = DB::table('buses')
+              ->where('rf_id', $rf_id)
+              ->first();
+		return $bus;
+	}
+}
 
 // ---------------------------------------- ROUTES -----------------------------------------
 
