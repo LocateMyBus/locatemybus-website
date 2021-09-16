@@ -23,7 +23,7 @@ class BusSeeder extends Seeder
       Bus::create([
           'route_id'=>'314D',
           'model'=>'Volvo',
-		  'rf_id'=>'70891530'  // Dummy
+		  "rf_id"=>'70891530'  // Dummy
       ]);
     }
 }
