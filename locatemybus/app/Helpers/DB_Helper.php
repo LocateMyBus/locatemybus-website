@@ -484,7 +484,7 @@ if(!function_exists('getNextStop')){   // Returns false if no next stop. Else re
       if(strcmp($route->origin, $stop_id)==0){
         return false;
       }
-      $next_stop_serial = $serial->onward_serial - 1;
+      //$next_stop_serial = $serial->onward_serial - 1;
     }
     $serial = DB::table('stop_sequences')
                 ->select('onward_serial')

@@ -43,6 +43,7 @@ public function assign_bus_for_trip(Request $request){
 							if(checkTripExists($trip_id) && checkTripToStart($trip_id) && checkNoBusAssigned($trip_id)){
 								// Trip exists. Not started yet for today. No bus has been assigned yet.
 								$trip = getTripbyId($trip_id);
+								
 								$route_origin_id = getStopsInRoute($trip->route_id, $trip->is_onward)[0]->stop_id;
 								if(strcmp($route_origin_id, $stop_id)==0){
 									// Ensure that the calling stop is the origin of trip
