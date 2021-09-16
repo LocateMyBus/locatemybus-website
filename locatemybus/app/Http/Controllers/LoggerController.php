@@ -38,8 +38,8 @@ if($request->isMethod('post')){
 					$bus = getBusByRfId($rf_id);
 					if(!is_null($bus)){
 						// Bus exists. Valid RFID
-						$trip_id = $bus->current_tripcode;							
-						/*  -- */
+						$trip_id = getCurrentTripOfBus($bus->bus_id)->trip_id;
+						/* -- */
 						//$trip_id = strtoupper($request->input('trip_id')); // Will be empty string if not avl in Request
 						if(!is_null($trip_id) && checkTripExists($trip_id)){
 							if(checkStopInRoute($trip_id, $stop_id)){
