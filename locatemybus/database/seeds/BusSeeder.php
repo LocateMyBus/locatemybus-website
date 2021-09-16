@@ -17,11 +17,13 @@ class BusSeeder extends Seeder
       DB::statement('SET FOREIGN_KEY_CHECKS=1;');
       Bus::create([
           'route_id'=>'314D',
-          'model'=>'Ashok Leyland'
+          'model'=>'MBenz',
+		  'rf_id'=>'60891530'
       ]);
       Bus::create([
           'route_id'=>'314D',
-          'model'=>'Volvo'
+          'model'=>'Volvo',
+		  'rf_id'=>'70891530'  // Dummy
       ]);
     }
 }
