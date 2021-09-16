@@ -12,7 +12,7 @@ class Route extends Model
     protected $fillable = [
         'route_id',
         'origin',
-	'destination'
+		'destination'
     ]; // for mass-assignment
 }
 
