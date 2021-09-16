@@ -2,6 +2,7 @@
 
   <head>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     @yield('file_includes')
 	</head>
 

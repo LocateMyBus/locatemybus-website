@@ -2,6 +2,7 @@
 function makeRequestAddress(location){
   var current_location = window.location.href.split('/');
   var request_url = current_location[0]
+  console.log(request_url);
   request_url += '//';
   request_url += current_location[1];
   request_url += current_location[2];
