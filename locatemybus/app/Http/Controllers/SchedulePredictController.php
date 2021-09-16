@@ -22,15 +22,15 @@ class SchedulePredictController extends Controller
           return view('schedule-prediction-show')->with($data);
         }
         else{
-          return response("Invalid URL1. Please Check and Try Again", 404);
+          return response("Invalid URL. Please Check and Try Again", 404);
         }
       }
       else{
-        return response("Invalid URL2. Please Check and Try Again", 404);
+        return response("Invalid URL. Please Check and Try Again", 404);
       }
     }
     else{
-      return response("Invalid URL.3 Please Check and Try Again", 404);
+      return response("Invalid URL. Please Check and Try Again", 404);
     }
   }
 }

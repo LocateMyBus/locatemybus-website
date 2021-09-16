@@ -652,38 +652,43 @@ if(!function_exists('getRunningStatus')){
 if(!function_exists('getExpectedSchedule')){
   function getExpectedSchedule($trip_id, $traveldate){
     $stops = getStopsInTrip($trip_id);
-    $route_id = DB::table('trips')
-                ->select('route_id')
+    $trip = DB::table('trips')
+                ->select('route_id', 'is_onward')
                 ->where('trip_id', $trip_id)
-                ->first()
-                ->route_id;
-    $origin = DB::table('routes')
-              ->select('origin')
-              ->where('route_id', $route_id)
-              ->first()
-              ->origin;
+                ->first();
+    $terminals = DB::table('routes')
+              ->select('origin', 'destination')
+              ->where('route_id', $trip->route_id)
+              ->first();
+	if($trip->is_onward){
+		$origin = $terminals->origin;
+	}
+	else{
+		$origin = $terminals->destination;
+	}
     // In same order as stops
     $schedule = [
       "stops" => array(),
       "times" => array(),
       "date" => $traveldate,
-      "route" => $route_id
+      "route" => $trip->route_id
     ];
     for($i=0;$i<sizeof($stops);$i++){
-      $stop_name = DB::table('stops')
-                      ->select('stop_name')
-                      ->where('stop_id', $stops[$i]->stop_id)
-                      ->first()
-                      ->stop_name;
-      if(strcmp($stops[$i]->stop_id, $origin)==0){
-        // FOR ORIGIN, DISPLAY SCHEDULE START TIME
-        $trip_sched_start = DB::table('trips')
-                            ->select('sched_start_time')
-                            ->where('trip_id', $trip_id)
-                            ->first()
-                            ->sched_start_time;
-        array_push($schedule['times'], substr($trip_sched_start, 0, 5));
-      }
+		$stop_name = DB::table('stops')
+						->select('stop_name')
+						->where('stop_id', $stops[$i]->stop_id)
+						->first()
+						->stop_name;
+		
+		if(strcmp($stops[$i]->stop_id, $origin)==0){
+			// FOR ORIGIN, DISPLAY SCHEDULE START TIME
+			$trip_sched_start = DB::table('trips')
+								->select('sched_start_time')
+								->where('trip_id', $trip_id)
+								->first()
+								->sched_start_time;
+			array_push($schedule['times'], substr($trip_sched_start, 0, 5));
+     	}
       else{
         // FOR OTHER STOPS, DISPLAY PREDICTED TIMES
         array_push($schedule['times'], predictByModel($trip_id, $stops[$i]->stop_id, $traveldate));
