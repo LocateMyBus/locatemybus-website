@@ -15,22 +15,24 @@ class CreateTripsTable extends Migration
     {
         Schema::create('trips', function (Blueprint $table) {
             $table->string('trip_id')->primary();
-            $table->integer('bus_id')->unsigned();
-	    $table->foreign('bus_id')
-		  ->references('bus_id')
-		  ->on('buses')
-		  ->onDelete('cascade')
-		  ->onUpdate('cascade');
-	    $table->string('route_id');
-	    $table->foreign('route_id')
-		  ->references('route_id')
-		  ->on('routes')
-		  ->onDelete('cascade')
-		  ->onUpdate('cascade');
-   	    $table->time('sched_start_time');
-	    $table->time('sched_end_time');
-	    $table->boolean('is_onward');
-	    $table->boolean('is_active');
+            $table->integer('bus_id')
+				->unsigned()
+				->nullable();
+			$table->foreign('bus_id')
+				->references('bus_id')
+				->on('buses')
+				->onDelete('cascade')
+				->onUpdate('cascade');
+			$table->string('route_id');
+			$table->foreign('route_id')
+				->references('route_id')
+				->on('routes')
+				->onDelete('cascade')
+				->onUpdate('cascade');
+			$table->time('sched_start_time');
+			$table->time('sched_end_time');
+			$table->boolean('is_onward');
+			$table->boolean('is_active');
         });
     }
 

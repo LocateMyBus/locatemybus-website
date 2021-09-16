@@ -17,7 +17,7 @@ class TripSeeder extends Seeder
       DB::statement('SET FOREIGN_KEY_CHECKS=1;');
       Trip::create([
           'trip_id'=>'314D0915O',  //RouteID+StartTime+O(nward)/R(eturn)
-          'bus_id'=>1,
+          //'bus_id'=>1,
           'route_id'=>'314D',
           'sched_start_time'=>'09:15',
           'sched_end_time'=>'11:45',
@@ -26,7 +26,7 @@ class TripSeeder extends Seeder
       ]);
       Trip::create([
           'trip_id'=>'314D1330O',  //RouteID+StartPlace+O(nward)/R(eturn)
-          'bus_id'=>2,
+          //'bus_id'=>2,
           'route_id'=>'314D',
           'sched_start_time'=>'13:30',
           'sched_end_time'=>'15:15',

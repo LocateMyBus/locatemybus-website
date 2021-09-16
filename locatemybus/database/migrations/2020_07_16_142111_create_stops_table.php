@@ -16,9 +16,9 @@ class CreateStopsTable extends Migration
         Schema::create('stops', function (Blueprint $table) {
             $table->string('stop_id')->primary();
             $table->string('stop_name');
-	    $table->boolean('is_active')->default(1);
-	    $table->decimal('latitude',11,8);
-	    $table->decimal('longitude',11,8);
+			$table->boolean('is_active')->default(1);
+			$table->decimal('latitude',11,8);
+			$table->decimal('longitude',11,8);
         });
     }
 
