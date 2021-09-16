@@ -11,6 +11,8 @@ class Bus extends Model
     protected $primaryKey = "bus_id";
     protected $fillable = [
 	"route_id",
-	"model"
+	"model",
+	"rf_id",
+	"current_tripcode"
     ]; // for mass-assignment
 }

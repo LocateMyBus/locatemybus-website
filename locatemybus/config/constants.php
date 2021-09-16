@@ -7,6 +7,6 @@ return [
     ]
   ],
   "API" => [
-    "TOKEN_VALIDITY_DAYS" => 2
+    "TOKEN_VALIDITY_DAYS" => 20
   ]
 ];

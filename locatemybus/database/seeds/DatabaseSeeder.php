@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
       $this->call(UserSeeder::class);
-	    $this->call(StopSeeder::class);
+		$this->call(StopSeeder::class);
       $this->call(RouteSeeder::class);
       $this->call(BusSeeder::class);
       $this->call(StopSequenceSeeder::class);
