@@ -234,6 +234,16 @@ if(!function_exists('checkTripToStart')){
   }
 }
 
+if(!function_exists('checkNoBusAssigned')){
+	function checkNoBusAssigned($trip_id){
+		$trip = DB::table('trips')
+				->select('bus_id')
+				->where('trip_id', $trip_id)
+				->first();
+		return is_null($trip->bus_id);
+	}
+}
+
 if(!function_exists('getStopsOrderInTrip')){
   function getStopsOrderInTrip($stop_1, $stop_2, $trip_id){
     // Return 1 if stop 1 comes first
@@ -430,6 +440,15 @@ if(!function_exists('getCurrentTripOfBus')){
 	function getCurrentTripOfBus($bus_id){
 		$trip = DB::table('trips')
 				->where('bus_id', $bus_id)
+				->first();
+		return $trip;
+	}
+}
+
+if(!function_exists('getTripById')){
+	function getTripById($trip_id){
+		$trip = DB::table('trips')
+				->where('trip_id', $trip_id)
 				->first();
 		return $trip;
 	}

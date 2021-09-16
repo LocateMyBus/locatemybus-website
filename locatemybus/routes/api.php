@@ -27,3 +27,6 @@ Route::post('log-time', 'LoggerController@add_log');
 
 Route::get('get-arrivals', 'LivePredictionController@show_message');
 Route::post('get-arrivals', 'LivePredictionController@show_arrivals');
+
+Route::get('set-trip-bus', 'TripBusController@show_message');
+Route::post('set-trip-bus', 'TripBusController@assign_bus_for_trip');

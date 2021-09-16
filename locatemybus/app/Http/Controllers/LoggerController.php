@@ -47,39 +47,39 @@ if($request->isMethod('post')){
 								if(checkStopInRoute($trip_id, $stop_id)){
 									if(checkSameDayLog($trip_id, $stop_id, $arr_date)){
 									// If this trip has been logged already, ignore
-									return response()->json([
-										"Error" => "This trip was already logged"
-									], 208); // Already Reported
+										return response()->json([
+											"Error" => "This trip was already logged"
+										], 208); // Already Reported
 									}
 									else{
-									DB::table('time_logs')->insert([
-										'trip_id' => $trip_id,
-										'stop_id' => $stop_id,
-										'arrival_time' => $arr_time,
-										'arrival_date' => $arr_date,
-									]);
-									$next_stop = getNextStop($trip_id, $stop_id);
-									if(!$next_stop){
-										// This is the last stop of the route
-										;
-									}
-									else{
-										$predicted_time = predictByTraffic($stop_id, $next_stop);
-										cleanTripPredictions($trip_id, $next_stop, $arr_date);
-										// Make new prediction entry
-										DB::table('live_traffic_predictions')->insert([
-										'trip_id' => $trip_id,
-										'trip_date' => $arr_date,
-										'predicted_time' => $predicted_time,
-										'stop_id' => $next_stop,
+										DB::table('time_logs')->insert([
+											'trip_id' => $trip_id,
+											'stop_id' => $stop_id,
+											'arrival_time' => $arr_time,
+											'arrival_date' => $arr_date,
 										]);
-									}
-									return response()->json([
-										"Success" => "Trip Time Logged",
-										"Time" => $arr_time,
-										"Date" => $arr_date
-									], 202); // Accepted
-									}
+										$next_stop = getNextStop($trip_id, $stop_id);
+										if(!$next_stop){
+											// This is the last stop of the route
+											;
+										}
+										else{
+											$predicted_time = predictByTraffic($stop_id, $next_stop);
+											cleanTripPredictions($trip_id, $next_stop, $arr_date);
+											// Make new prediction entry
+											DB::table('live_traffic_predictions')->insert([
+											'trip_id' => $trip_id,
+											'trip_date' => $arr_date,
+											'predicted_time' => $predicted_time,
+											'stop_id' => $next_stop,
+											]);
+										}
+										return response()->json([
+											"Success" => "Trip Time Logged",
+											"Time" => $arr_time,
+											"Date" => $arr_date
+										], 202); // Accepted
+										}
 								}
 								else{
 									return response()->json([
