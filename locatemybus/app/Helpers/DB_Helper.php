@@ -170,15 +170,14 @@ if(!function_exists('checkTripRunning')){
     if(is_null($date)){
       $date = date('Y-m-d');
     }
-    $route_id = DB::table('trips')
-                ->select('route_id')
+    $trip = DB::table('trips')
+                ->select('route_id', 'is_onward')
                 ->where('trip_id', $trip_id)
                 ->where('is_active', 1)
-                ->first()
-                ->route_id;
+                ->first();
     $route_row = DB::table('routes')
                 ->select('origin', 'destination')
-                ->where('route_id', $route_id)
+                ->where('route_id', $trip->route_id)
                 ->first();
     $origin_logged = DB::table('time_logs')
                     ->where('stop_id', $route_row->origin)
@@ -190,9 +189,14 @@ if(!function_exists('checkTripRunning')){
                     ->where('arrival_date', $date)
                     ->where('trip_id', $trip_id)
                     ->first();
-    if(is_null($destn_logged) && !is_null($origin_logged)){
-      return true;
+    if($trip->is_onward && is_null($destn_logged) && !is_null($origin_logged)){
+		// Onward trip. Source logged. Destn not logged
+      	return true;
     }
+	elseif(!$trip->is_onward && !is_null($destn_logged) && is_null($origin_logged)){
+		// Return trip. Source not logged. Destn logged
+		return true;
+	}
     else{
       return false;
     }
