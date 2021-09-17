@@ -7,7 +7,7 @@ class BusSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
+     * 60891530
      * @return void
      */
     public function run()
@@ -18,12 +18,12 @@ class BusSeeder extends Seeder
       Bus::create([
           'route_id'=>'314D',
           'model'=>'MBenz',
-		  'rf_id'=>'60891530'
+		  'rf_id'=>'961372148204'
       ]);
       Bus::create([
           'route_id'=>'314D',
           'model'=>'Volvo',
-		  "rf_id"=>'70891530'  // Dummy
+		  "rf_id"=>'AAAD1286'  // Dummy
       ]);
     }
 }
